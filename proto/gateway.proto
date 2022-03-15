@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package gateway;
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+// Defines the import path that should be used to import the generated package,
+// and the package name.
+option go_package = ".;proto";
+
+service GatewayService {
+  rpc InitSecretKey(EncryptedGatewayRequest) returns (EncryptedGatewayResponse){
+    option (google.api.http) = {
+      post: "/api/gateway/init"
+      body: "*"
+    };
+  }
+}
+
+message EncryptedGatewayRequest {
+  string data = 1;
+}
+
+message EncryptedGatewayResponse {
+  string data = 1;
+}
+
+

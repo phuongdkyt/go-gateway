@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package gateway;
+
+// Defines the import path that should be used to import the generated package,
+// and the package name.
+option go_package = ".;proto";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+
+
+// Here is the overall greeting service definition where we define all our endpoints
+service DevelopmentService {
+  rpc GenerateSecretKey(google.protobuf.Empty) returns (GenerateSecretKeyResponse){
+    option (google.api.http) = {
+      get: "/api/gateway/dev/key"
+    };
+  };
+
+  rpc DecryptSecretSessionId(DecryptSecretSessionIdRequest) returns (DecryptSecretSessionIdResponse){
+    option (google.api.http) = {
+      post: "/api/gateway/dev/decrypt-key-id"
+      body: "*"
+    };
+  }
+
+  rpc EncryptData(DevEncryptDataRequest) returns (DevEncryptDataResponse){
+    option (google.api.http) = {
+      post: "/api/gateway/dev/data-encrypt"
+      body: "*"
+    };
+  }
+
+  rpc DecryptData(DevDecryptDataRequest) returns (DevDecryptDataResponse){
+    option (google.api.http) = {
+      post: "/api/gateway/dev/data-decrypt"
+      body: "*"
+    };
+  }
+
+  rpc SetSecretSessionTimeout(SetSecretSessionTimeoutRequest) returns (google.protobuf.Empty){
+    option (google.api.http) = {
+      get: "/api/gateway/dev/secret-session"
+    };
+  }
+}
+
+message GenerateSecretKeyResponse {
+  string data = 1;
+  string secret_key = 2;
+}
+
+message DecryptSecretSessionIdRequest {
+  string data = 1;
+  string secret_key = 2;
+}
+
+message DecryptSecretSessionIdResponse {
+  string data = 1;
+}
+
+message DevEncryptDataRequest {
+  string data = 1;
+  string secret_key = 2;
+}
+
+message DevEncryptDataResponse {
+  string data = 1;
+}
+
+message DevDecryptDataRequest {
+  string data = 1;
+  string secret_key = 2;
+}
+
+message DevDecryptDataResponse {
+  string data = 1;
+}
+
+message SetSecretSessionTimeoutRequest {
+  string timeout = 1;
+}
+
